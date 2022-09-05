@@ -27,7 +27,20 @@ function agregarTweet(e) {
         return; // Evita que se ejecuten más líneas de código. Funciona en un if si está en una función
     }
 
-    console.log('agregando tweet');
+    const tweetObj = {
+        id: Date.now(),
+        tweet // En un ojeto cuando llave y valor se llaman igual,
+    }
+
+    // Añadir al arreglo de tweets 
+    tweets = [...tweets, tweetObj]; // Una copia el arreglo y agregamos el tweet
+
+    // Una vez creado vamos a crear el HTML
+    crearHTML();
+
+    // Reiniciar el formulario
+    formulario.reset();
+
     
 }
 
@@ -45,4 +58,32 @@ function mostrarError( error ) {
     setTimeout (() => {
         mensajeError.remove();
     },2000);
+}
+
+
+// Muestra un listado de los tweets
+
+function crearHTML() {
+    limpiarHTML();
+
+    if(tweets.length > 0) {
+        tweets.forEach( tweet => {
+            // Crear HTML
+            const li = document.createElement('li');
+
+            // añadir Texto
+            li.innerText = tweet.tweet;
+
+            // insertar en el html
+            listaTweets.appendChild(li); // no limpia el código previo
+        });
+    }
+}
+
+// Limpiar el HTM
+function limpiarHTML() {
+    // Mientras haya elementos
+    while( listaTweets.firstChild) {
+        listaTweets.removeChild(listaTweets.firstChild);
+    }
 }
