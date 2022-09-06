@@ -12,7 +12,7 @@ function eventListeners() {
 
     // Cuando el documento está listo
     document.addEventListener('DOMContentLoaded', () => {
-        tweets = JSON.parse( localStorage.getItem('tweets') || [] );
+        tweets = JSON.parse( localStorage.getItem('tweets')) || [] ;
 
         console.log(tweets);
 
@@ -23,11 +23,11 @@ function eventListeners() {
 
 
 /**Funciones */
-
+// Añadier tweet del formulario
 function agregarTweet(e) {
     e.preventDefault();
     
-    // Textarea donde el usuario escribe 
+    // Textarea donde el usuario escribe. Leer el valor del text area
     const tweet = document.querySelector('#tweet').value; // Una vez que se presione submit, se lee el valor del tweet
 
     // Validación... 
@@ -78,13 +78,25 @@ function crearHTML() {
 
     if(tweets.length > 0) {
         tweets.forEach( tweet => {
-            // Crear HTML
-            const li = document.createElement('li');
 
+            // Agregar un btn de eliminar 
+            const btnEliminar = document.createElement('a');
+            btnEliminar.classList.add('borrar-tweet'); // Puede ser .classList.add('')
+            btnEliminar.innerText = 'X'; // Puede ser .innerText
+
+            // Aadier la función de eliminar
+            btnEliminar.onclick = () => {
+                borrarTweet(tweet.id);
+            }
+
+            // Crear HTML. Crear elemento y añadirle el contenido a la lista
+            const li = document.createElement('li');
             // añadir Texto
             li.innerText = tweet.tweet;
 
-            // insertar en el html
+            // Asignar el botón de borrar a tweet
+            li.appendChild(btnEliminar);
+            // insertar en el html. Añade el tweet a la lista
             listaTweets.appendChild(li); // no limpia el código previo
         });
     }
@@ -96,6 +108,13 @@ function crearHTML() {
 // Agrega los tweets actuales a LocalStorage
 function sincronizarStorage() {
     localStorage.setItem('tweets', JSON.stringify(tweets));
+}
+
+// Elimina un Tweet
+function borrarTweet( id ) {
+    tweets = tweets.filter( tweet => tweet.id !== id); // Nos traemos todos, excepto al que le dimos click
+
+    crearHTML(); // Para refrescar
 }
 
 // Limpiar el HTM
